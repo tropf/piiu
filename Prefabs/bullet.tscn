@@ -29,7 +29,6 @@ func _ready():
 	# Initialization here
 	set_process(true)
 	connect(\"body_enter\", self, \"on_body_enter\")
-	set_type(0)
 
 func get_speed():
 	return speed
@@ -112,7 +111,6 @@ visibility/visible = false
 transform/scale = Vector2( 0.02, 0.02 )
 frames = SubResource( 3 )
 animation = "default"
-frame = 1
 playing = true
 
 [node name="shape" type="CollisionShape2D" parent="."]
@@ -129,7 +127,6 @@ transform/pos = Vector2( -4.27188, -0.142395 )
 transform/scale = Vector2( 0.04, 0.04 )
 frames = SubResource( 4 )
 animation = "default"
-frame = 1
 playing = true
 
 [node name="stone_sprite" type="AnimatedSprite" parent="."]

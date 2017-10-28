@@ -19,9 +19,20 @@ func _ready():
 	# Initialization here
 	#set_use_custom_integrator(true)
 	
+var left_input
+var right_input
+var jump_input
+var shoot_input
+
+func set_controlls(controlls):
+	left_input =  controlls + "_left"
+	right_input = controlls + "_right"
+	jump_input = controlls + "_jump"
+	shoot_input = controlls + "_shoot"
+
 func reset_jumps():
 	jumps = 2
-
+	
 func move_horizontal(delta, scale):
 	var v = get_linear_velocity()
 	if v.x == 0 or scale == 0 or abs(v.x) / v.x == abs(scale) / scale:
@@ -46,14 +57,14 @@ func _integrate_forces(state):
 	state.set_linear_velocity(Vector2(next_x, v.y))
 	
 func _input(event):
-	if jumps and Input.is_action_pressed("ui_up"):
+	if jumps and Input.is_action_pressed(jump_input):
 		jumps -= 1
 		set_linear_velocity(Vector2(0, -900))
 	
 func _fixed_process(delta):
-	if not stopped and Input.is_action_pressed("ui_right"):
+	if not stopped and Input.is_action_pressed(right_input):
 		move_horizontal(delta, 1)
-	if not stopped and Input.is_action_pressed("ui_left"):
+	if not stopped and Input.is_action_pressed(left_input):
 		move_horizontal(delta, -1)
 	if since_stopped < 0.03:
 		since_stopped += delta

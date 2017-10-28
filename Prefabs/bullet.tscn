@@ -127,6 +127,7 @@ transform/pos = Vector2( -4.27188, -0.142395 )
 transform/scale = Vector2( 0.04, 0.04 )
 frames = SubResource( 4 )
 animation = "default"
+frame = 1
 playing = true
 
 [node name="stone_sprite" type="AnimatedSprite" parent="."]

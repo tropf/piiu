@@ -39,6 +39,7 @@ func on_body_enter(collider):
 	if null != collider:
 		print (\"notified...\")
 		collider.notification(1337)
+
 	else:
 		print(\"eehhh collider is leider null\")
 	

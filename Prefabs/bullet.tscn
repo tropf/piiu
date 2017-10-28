@@ -1,7 +1,12 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=13 format=1]
 
 [ext_resource path="res://Assets/bullets/Schere_auf.png" type="Texture" id=1]
 [ext_resource path="res://Assets/bullets/Schere_zu.png" type="Texture" id=2]
+[ext_resource path="res://Assets/bullets/Papier_2.png" type="Texture" id=3]
+[ext_resource path="res://Assets/bullets/Papier_1.png" type="Texture" id=4]
+[ext_resource path="res://Assets/bullets/Stein_1.png" type="Texture" id=5]
+[ext_resource path="res://Assets/bullets/Stein_2.png" type="Texture" id=6]
+[ext_resource path="res://Assets/bullets/Stein_3.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -24,6 +29,7 @@ func _ready():
 	# Initialization here
 	set_process(true)
 	connect(\"body_enter\", self, \"on_body_enter\")
+	set_type(0)
 
 func get_speed():
 	return speed
@@ -33,6 +39,18 @@ func add_immune(obj):
 	
 func set_type(type_to_set):
 	type = type_to_set
+	if 0 == type:
+		get_node(\"scissors_sprite\").show()
+		get_node(\"paper_sprite\").hide()
+		get_node(\"stone_sprite\").hide()
+	if 1 == type:
+		get_node(\"scissors_sprite\").hide()
+		get_node(\"paper_sprite\").hide()
+		get_node(\"stone_sprite\").show()
+	if 2 == type:
+		get_node(\"scissors_sprite\").hide()
+		get_node(\"paper_sprite\").show()
+		get_node(\"stone_sprite\").hide()
 
 func get_type():
 	return type
@@ -47,13 +65,30 @@ func on_body_enter(collider):
 	if null != collider:
 		if not immune.has(collider.get_instance_ID()):
 			collider.notification(1337 + type)
-		
-	queue_free()"
+			queue_free()"
 
 [sub_resource type="SpriteFrames" id=3]
 
 animations = [ {
 "frames": [ ExtResource( 1 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=4]
+
+animations = [ {
+"frames": [ ExtResource( 3 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 7.0
+} ]
+
+[sub_resource type="SpriteFrames" id=5]
+
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -71,18 +106,40 @@ linear_damp = 0.1
 angular_damp = 1.0
 script/script = SubResource( 2 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+[node name="scissors_sprite" type="AnimatedSprite" parent="."]
 
+visibility/visible = false
 transform/scale = Vector2( 0.02, 0.02 )
 frames = SubResource( 3 )
 animation = "default"
+frame = 1
 playing = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="shape" type="CollisionShape2D" parent="."]
 
 transform/scale = Vector2( 3, 3 )
 shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
+
+[node name="paper_sprite" type="AnimatedSprite" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( -4.27188, -0.142395 )
+transform/scale = Vector2( 0.04, 0.04 )
+frames = SubResource( 4 )
+animation = "default"
+frame = 1
+playing = true
+
+[node name="stone_sprite" type="AnimatedSprite" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( -5.06992, 0.174824 )
+transform/scale = Vector2( 0.023, 0.023 )
+frames = SubResource( 5 )
+animation = "default"
+frame = 2
+playing = true
 
 

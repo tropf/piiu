@@ -16,6 +16,7 @@ script/source = "extends Area2D
 # var a = 2
 # var b = \"textvar\"
 var speed = Vector2(0, 0)
+var type = null
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -26,6 +27,12 @@ func _ready():
 func get_speed():
 	return speed
 
+func set_type(type_to_set):
+	type = type_to_set
+
+func get_type():
+	return type
+
 func set_speed(speed_to_set):
 	speed = speed_to_set
 	
@@ -34,7 +41,7 @@ func _process(delta):
 
 func on_body_enter(collider):
 	if null != collider:
-		collider.notification(1337)
+		collider.notification(1337 + type)
 		
 	queue_free()"
 
@@ -64,7 +71,6 @@ script/script = SubResource( 2 )
 transform/scale = Vector2( 0.02, 0.02 )
 frames = SubResource( 3 )
 animation = "default"
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

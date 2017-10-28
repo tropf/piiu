@@ -17,6 +17,10 @@ script/source = "extends RigidBody2D
 # var b = \"textvar\"
 const MAX_SPEED = 400
 const ACCELRATION = 1600
+const MAX_HITPOINTS = 10
+
+var hitpoints = MAX_HITPOINTS
+var current_type = 0
 
 var jumps = 2
 const BULLET = preload(\"res://Prefabs/bullet.tscn\")
@@ -33,6 +37,8 @@ var right_input
 var jump_input
 var shoot_input
 
+var name = \"nameless blob\"
+
 func _ready():
 	set_fixed_process(true)
 	set_process_input(true)
@@ -42,6 +48,18 @@ func _ready():
 	# Initialization here
 	#set_use_custom_integrator(true)
 
+func get_name():
+	return name
+
+func set_name(name_to_set):
+	name = name_to_set
+	
+func get_current_type():
+	return current_type
+	
+func set_current_type(type_to_set):
+	current_type = type_to_set
+	
 func set_controlls(controlls):
 	left_input =  controlls + \"_left\"
 	right_input = controlls + \"_right\"
@@ -81,13 +99,47 @@ func _input(event):
 	if event.is_action_pressed(shoot_input):
 		#apply_impulse(Vector2(0,0),Vector2(-200 * cos(gun.get_rot()), -200 * -sin(gun.get_rot())))
 		var bullet = BULLET.instance()
+		bullet.set_type(1)
 		bullet.set_rot(gun.get_rot())
 		var pos = get_pos() + Vector2(60 * cos(gun.get_rot()), 60 * -sin(gun.get_rot()))
 		bullet.set_pos(pos)
 		print(gun.get_rot())
 		bullet.set_speed(Vector2(500 * cos(gun.get_rot()), 500 * -sin(gun.get_rot())))
 		get_parent().add_child(bullet)
-	
+		
+func die():
+		queue_free()
+		
+func _take_dmg(amount):
+	if amount > hitpoints:
+		print(\"ded\")
+		die()
+	else:
+		hitpoints -= amount
+
+func _notification(what):
+	if 1337 == what:
+		if 0 == current_type:
+			_take_dmg(2)
+		elif 1 == current_type:
+			_take_dmg(1)
+		elif 2 == current_type:
+			_take_dmg(4)
+	if 1338 == what:
+		if 0 == current_type:
+			_take_dmg(4)
+		elif 1 == current_type:
+			_take_dmg(2)
+		elif 2 == current_type:
+			_take_dmg(1)
+	if 1339 == what:
+		if 0 == current_type:
+			_take_dmg(1)
+		elif 1 == current_type:
+			_take_dmg(4)
+		elif 2 == current_type:
+			_take_dmg(2)
+
 func _fixed_process(delta):
 	if not stopped and Input.is_action_pressed(right_input):
 		move_horizontal(delta, 1)

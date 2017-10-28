@@ -47,6 +47,29 @@ var shoot_input
 
 var player_name = \"nameless blob\"
 
+#interface:
+func move_r():
+	print(\"move_r\")
+
+func move_l():
+	print(\"move_l\")
+
+func jump():
+	print(\"jump\")
+
+func switch_f():
+	print(\"switch_f\")
+
+func switch_b():
+	print(\"switch_b\")
+
+func aim_to(vector2):
+	print(\"aim_to \", vector2)
+
+func fire():
+	print(\"FIRE FIRE FIRE\")
+#END interface
+
 func _ready():
 	set_fixed_process(true)
 	set_process_input(true)

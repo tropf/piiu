@@ -7,36 +7,46 @@ extends Node2D
 const PLAYER_1_CONTROLLS = "player1"
 const PLAYER_2_CONTROLLS = "player2"
 const player_prefab = preload("res://Prefabs/player.tscn")
+var current_lvl = null
+var player_controls = {}
 
 func _ready():
-	pass
+	player_controls[0] = PLAYER_1_CONTROLLS
+	player_controls[1] = PLAYER_2_CONTROLLS
 
 func spawn_players():
-	var player1_pos = get_node("player1_spawn").get_pos()
-	var player2_pos = get_node("player2_spawn").get_pos()
+	var spawns = []
+	for single_spawn in current_lvl.get_node("spawns").get_children():
+		spawns.append(single_spawn.get_pos())
+		
+	for i in range(spawns.size()):
+		var rand_min = 0
+		var rand_max = spawns.size() - i - 1
+		var rand_nr = int(rand_range(rand_min, rand_max + 0.999))
+		
+		var tmp = spawns[rand_nr]
+		spawns[rand_nr] = spawns[rand_max]
+		spawns[rand_max] = tmp
+		
+	for i in range(player_controls.size()):
+		var player = player_prefab.instance()
+		player.set_pos(spawns[i])
+		player.set_controlls(player_controls[i])
+		get_node("players").add_child(player)
 	
-	var player1 = player_prefab.instance()
-	player1.set_pos(player1_pos)
-	player1.set_controlls(PLAYER_1_CONTROLLS)
-
-	var player2 = player_prefab.instance()
-	player2.set_pos(player2_pos)
-	player2.set_controlls(PLAYER_2_CONTROLLS)
-	
-	add_child(player1)
-	add_child(player2)
+	get_node("players").set_process(true)
 	
 	get_node("level_selection").queue_free()
 
 func _on_btn_level1_pressed():
-	var lvl1 = preload("res://Scenes/lvl1.tscn").instance()
+	var lvl1 = preload("res://Scenes/lvl0.tscn").instance()
+	current_lvl = lvl1
 	add_child(lvl1)
 	spawn_players()
 
 func _on_btn_level2_pressed():
-	#Global.winner = "Mulham"
-	#get_tree().change_scene("res://Scenes/win_scene.tscn")
-	var lvl2 = preload("res://Scenes/lvl0.tscn").instance()
+	var lvl2 = preload("res://Scenes/lvl2.tscn").instance()
+	current_lvl = lvl2
 	add_child(lvl2)
 	spawn_players()
 

@@ -7,7 +7,7 @@ extends Container
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
-	pass
+	randomize()
 
 func _on_btn_newGame_pressed():
 	get_tree().change_scene("res://Scenes/demo_scene.tscn")

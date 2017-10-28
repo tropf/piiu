@@ -18,7 +18,6 @@ func _ready():
 	pass
 	
 func _process(delta):
-	print(str(get_children().size()))
 	if 1 == get_children().size():
 		Global.winner = get_children()[0].get_player_name()
 		for child in get_children():

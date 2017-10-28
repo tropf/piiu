@@ -25,6 +25,7 @@ var current_type = 0
 var jumps = 2
 var jumping = 0
 const BULLET = preload(\"res://Prefabs/bullet.tscn\")
+var fire_ready = 0
 
 var stopped = false
 var since_stopped = 1
@@ -53,22 +54,36 @@ func move_r(delta):
 		move_horizontal(delta, 1)
 
 func move_l(delta):
-	print(\"move_l\")
+	if not stopped:
+		move_horizontal(delta, -1)
 
 func jump():
-	print(\"jump\")
+	if jumps:
+		jumps -= 1
+		set_linear_velocity(Vector2(0, -700))
 
 func switch_f():
-	print(\"switch_f\")
+	current_type = (current_type+1)%3
 
 func switch_b():
-	print(\"switch_b\")
+	current_type = (current_type-1)%3
 
 func aim_to(vector2):
-	print(\"aim_to \", vector2)
+	gun.aim_to(vector2)
 
 func fire():
-	print(\"FIRE FIRE FIRE\")
+	if fire_ready <=0:
+		#apply_impulse(Vector2(0,0),Vector2(-200 * cos(gun.get_rot()), -200 * -sin(gun.get_rot())))
+		fire_ready = 1
+		var bullet = BULLET.instance()
+		bullet.set_type(get_current_type())
+		bullet.set_rot(gun.get_rot())
+		var pos = get_pos() + Vector2(60 * cos(gun.get_rot()), 60 * -sin(gun.get_rot()))
+		bullet.set_pos(pos)
+		print(gun.get_rot())
+		bullet.set_speed(Vector2(500 * cos(gun.get_rot()), 500 * -sin(gun.get_rot())))
+		bullet.add_immune(self)
+		get_parent().add_child(bullet)
 #END interface
 
 func get_max_hitpoints():
@@ -143,21 +158,10 @@ func _integrate_forces(state):
 	state.set_linear_velocity(Vector2(next_x, v.y))
 	
 func _input(event):
-	if jumps and event.is_action_pressed(jump_input):
-		jumps -= 1
-		set_linear_velocity(Vector2(0, -700))
+	if event.is_action_pressed(jump_input):
+		jump()
 	if event.is_action_pressed(shoot_input):
-		#apply_impulse(Vector2(0,0),Vector2(-200 * cos(gun.get_rot()), -200 * -sin(gun.get_rot())))
-		var bullet = BULLET.instance()
-		bullet.set_type(get_current_type())
-		bullet.set_rot(gun.get_rot())
-		var pos = get_pos() + Vector2(60 * cos(gun.get_rot()), 60 * -sin(gun.get_rot()))
-		bullet.set_pos(pos)
-		print(gun.get_rot())
-		bullet.set_speed(Vector2(500 * cos(gun.get_rot()), 500 * -sin(gun.get_rot())))
-		bullet.add_immune(self)
-		get_parent().add_child(bullet)
-		
+		fire()
 func die():
 		queue_free()
 		
@@ -192,14 +196,19 @@ func _notification(what):
 			_take_dmg(2)
 
 func _fixed_process(delta):
+	
 	if Input.is_action_pressed(right_input):
 		move_r(delta)
-	if not stopped and Input.is_action_pressed(left_input):
-		move_horizontal(delta, -1)
+	if Input.is_action_pressed(left_input):
+		move_l(delta)
+	aim_to(get_viewport().get_mouse_pos())
+	
 	if since_stopped < 0.03:
 		since_stopped += delta
 	else:
 		stopped = false
+	if fire_ready > 0:
+		fire_ready -= delta
 	if jumping==0:
 		sprite.set_texture(CHAR_FALLING)
 	else:
@@ -248,10 +257,10 @@ script/source = "extends Position2D
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
-	set_process(true)
+	pass
 	
-func _process(delta):
-	set_rot(to_angle(get_viewport().get_mouse_pos() - get_parent().get_pos() ))
+func aim_to(vector2):
+	set_rot(to_angle(vector2 - get_parent().get_pos() ))
 	
 func to_angle(vector):
 	return (atan2(vector.x, vector.y) - PI/2)"

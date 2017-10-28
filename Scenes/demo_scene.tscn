@@ -4,8 +4,6 @@
 [ext_resource path="res://fps.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/level_selection.tscn" type="PackedScene" id=3]
 
-
-
 [node name="GameManager" type="Node2D"]
 
 script/script = ExtResource( 1 )
@@ -33,13 +31,13 @@ transform/pos = Vector2( 270.714, 400.467 )
 
 transform/pos = Vector2( 813.748, 397.813 )
 
-[node name="root" parent="." instance=ExtResource( 3 )]
+[node name="level_selection" parent="." instance=ExtResource( 3 )]
 
-[connection signal="pressed" from="root/buttons/btn_level1" to="." method="_on_btn_level1_pressed"]
+[connection signal="pressed" from="level_selection/buttons/btn_level1" to="." method="_on_btn_level1_pressed"]
 
-[connection signal="pressed" from="root/buttons/btn_level2" to="." method="_on_btn_level2_pressed"]
+[connection signal="pressed" from="level_selection/buttons/btn_level2" to="." method="_on_btn_level2_pressed"]
 
-[connection signal="pressed" from="root/buttons/btn_quit" to="." method="_on_btn_quit_pressed"]
+[connection signal="pressed" from="level_selection/buttons/btn_quit" to="." method="_on_btn_quit_pressed"]
 
 
-[editable path="root"]
+[editable path="level_selection"]

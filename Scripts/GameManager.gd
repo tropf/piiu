@@ -30,10 +30,12 @@ func spawn_players():
 func _on_btn_level1_pressed():
 	var lvl1 = preload("res://Scenes/lvl1.tscn").instance()
 	add_child(lvl1)
+	remove_child(get_node("level_selection"))
 	spawn_players()
 
 func _on_btn_level2_pressed():
-	pass # replace with function body
+	Global.winner = "Mulham"
+	get_tree().change_scene("res://Scenes/win_scene.tscn")
 
 
 func _on_btn_quit_pressed():

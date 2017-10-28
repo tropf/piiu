@@ -48,10 +48,11 @@ var shoot_input
 var player_name = \"nameless blob\"
 
 #interface:
-func move_r():
-	print(\"move_r\")
+func move_r(delta):
+	if not stopped:
+		move_horizontal(delta, 1)
 
-func move_l():
+func move_l(delta):
 	print(\"move_l\")
 
 func jump():
@@ -69,6 +70,20 @@ func aim_to(vector2):
 func fire():
 	print(\"FIRE FIRE FIRE\")
 #END interface
+
+func get_max_hitpoints():
+	return MAX_HITPOINTS
+
+func get_current_hitpoints():
+	return hitpoints
+	
+func set_hitpoints(points):
+	if points > MAX_HITPOINTS:
+		hitpoints = MAX_HITPOINTS
+	elif points < 0:
+		hitpoints = 0
+	else:
+		hitpoints = points
 
 func _ready():
 	set_fixed_process(true)
@@ -177,8 +192,8 @@ func _notification(what):
 			_take_dmg(2)
 
 func _fixed_process(delta):
-	if not stopped and Input.is_action_pressed(right_input):
-		move_horizontal(delta, 1)
+	if Input.is_action_pressed(right_input):
+		move_r(delta)
 	if not stopped and Input.is_action_pressed(left_input):
 		move_horizontal(delta, -1)
 	if since_stopped < 0.03:

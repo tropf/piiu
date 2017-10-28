@@ -17,6 +17,7 @@ script/source = "extends Area2D
 # var b = \"textvar\"
 var speed = Vector2(0, 0)
 var type = null
+var immune = []
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -27,6 +28,9 @@ func _ready():
 func get_speed():
 	return speed
 
+func add_immune(obj):
+	immune.append(obj.get_instance_ID())
+	
 func set_type(type_to_set):
 	type = type_to_set
 
@@ -41,7 +45,8 @@ func _process(delta):
 
 func on_body_enter(collider):
 	if null != collider:
-		collider.notification(1337 + type)
+		if not immune.has(collider.get_instance_ID()):
+			collider.notification(1337 + type)
 		
 	queue_free()"
 

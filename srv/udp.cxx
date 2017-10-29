@@ -11,6 +11,8 @@
 #include <dlib/sockets.h>
 #include <dlib/server.h>
 
+#include <mutex>
+
 using namespace std;
 using namespace dlib;
 
@@ -33,6 +35,8 @@ typedef struct {
 } bullet;
 
 int next_id = 0;
+std::mutex bullet_mutex;
+std::mutex info_mutex;
 
 std::map<int, playerinfo> info;
 std::vector<bullet> bullets;
@@ -114,7 +118,9 @@ string getter(int id = -1) {
 
 static string handle(string str) {
     if ("/new" == str) {
+        info_mutex.lock();
         int id = next_id++;
+        info_mutex.unlock();
         playerinfo p;
         p.x = "0";
         p.y = "0";
@@ -125,7 +131,9 @@ static string handle(string str) {
         p.hp = "10";
         p.time = chrono::system_clock::now();
 
+        info_mutex.lock();
         info[id] = p;
+        info_mutex.unlock();
         return std::to_string(id);
     }
 
@@ -146,7 +154,11 @@ static string handle(string str) {
         p.time = chrono::system_clock::now();
         
         info[id] = p;
-        return getter(id);
+        
+        info_mutex.lock();
+        auto x = getter(id);
+        info_mutex.unlock();
+        return x;
     }
 
     regex fire_regex("\\/fire\\/([0-9]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)");
@@ -163,31 +175,46 @@ static string handle(string str) {
         
         p.known.push_back(id);
 
+        bullet_mutex.lock();
         bullets.push_back(p);
+        bullet_mutex.unlock();
         return "";
     }
 
     regex bullets_regex("\\/bullets\\/([0-9]+)");
     if (regex_match(str, result, bullets_regex)) {
         int id = std::atoi(result[1].str().c_str());
-        return bulletinfo(id);
+
+        bullet_mutex.lock();
+        auto x = bulletinfo(id);
+        bullet_mutex.unlock();
+        return x;
     }
 
     regex get_regex("\\/get\\/([0-9]+)");
     if (regex_match(str, result, get_regex)) {
         int id = std::atoi(result[1].str().c_str());
-        return getter(id);
+
+        info_mutex.lock();
+        auto x = getter(id);
+        info_mutex.unlock();
+        return x;
     }
 
     if ("/get" == str) {
-        return getter();
+        info_mutex.lock();
+        auto x = getter();
+        info_mutex.unlock();
+        return x;
     }
 
     regex die_regex("\\/die\\/([0-9]+)");
     if (regex_match(str, result, die_regex)) {
         int id = std::atoi(result[1].str().c_str());
+        info_mutex.lock();
         info[id].dead = true;
         info[id].time = chrono::system_clock::now();
+        info_mutex.unlock();
         return "";
     }
 

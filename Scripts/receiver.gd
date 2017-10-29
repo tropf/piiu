@@ -26,6 +26,7 @@ static func receive_start(userdata):
 	
 	
 func spawn_remote_bullet(part):
+	print("spawning b: " + part)
 	var bullet = preload("res://Prefabs/bullet.tscn").instance()
 	var arr = part.split(",")
 	var x = float(arr[0])

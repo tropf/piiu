@@ -28,12 +28,6 @@ const CHAR_NORMAL = preload("res://Assets/players/char_normal.png")
 const CHAR_WALKING_RIGHT = preload("res://Assets/players/char_walking_right.png")
 const CHAR_WALKING_LEFT = preload("res://Assets/players/char_walking_left.png")
 
-
-var left_input
-var right_input
-var jump_input
-var shoot_input
-
 var player_name = "nameless blob"
 
 #interface:
@@ -68,7 +62,6 @@ func fire():
 		bullet.set_rot(gun.get_rot())
 		var pos = get_pos() + Vector2(60 * cos(gun.get_rot()), 60 * -sin(gun.get_rot()))
 		bullet.set_pos(pos)
-		print(gun.get_rot())
 		bullet.set_speed(Vector2(500 * cos(gun.get_rot()), 500 * -sin(gun.get_rot())))
 		bullet.add_immune(self)
 		get_parent().get_parent().add_child(bullet)
@@ -110,12 +103,6 @@ func get_current_type():
 func set_current_type(type_to_set):
 	current_type = type_to_set
 	
-func set_controlls(controlls):
-	left_input =  controlls + "_left"
-	right_input = controlls + "_right"
-	jump_input = controlls + "_jump"
-	shoot_input = controlls + "_shoot"
-
 func reset_jumps():
 	jumps = 2
 
@@ -145,20 +132,20 @@ func _integrate_forces(state):
 	
 	state.set_linear_velocity(Vector2(next_x, v.y))
 	
-func _input(event):
-	if event.is_action_pressed(jump_input):
-		jump()
-	if event.is_action_pressed(shoot_input):
-		fire()
 func die():
-		queue_free()
+	queue_free()
 		
 func _take_dmg(amount):
-	if amount > hitpoints:
-		print("ded")
+	if amount >= hitpoints:
 		die()
 	else:
 		hitpoints -= amount
+
+func is_local():
+	return false
+	
+func is_remote():
+	return false
 
 func _notification(what):
 	if 1337 == what:
@@ -184,13 +171,6 @@ func _notification(what):
 			_take_dmg(2)
 
 func _fixed_process(delta):
-	
-	if Input.is_action_pressed(right_input):
-		move_r(delta)
-	if Input.is_action_pressed(left_input):
-		move_l(delta)
-	aim_to(get_viewport().get_mouse_pos())
-	
 	if get_pos().y > get_viewport().get_rect().end.y * 3:
 		die()
 		

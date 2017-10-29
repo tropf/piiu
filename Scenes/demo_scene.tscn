@@ -60,14 +60,17 @@ func parse_single_player(data):
 	var y = float(as_array[2])
 	var vx = float(as_array[3])
 	var vy = float(as_array[4])
+	var aim = float(as_array[5])
+	var type = int(as_array[6])
 	
 	var pos = Vector2(x, y)
 	var v = Vector2(vx, vy)
 	
 	current_players.append(id)
-	print(\"pos: \" + str(pos))
 	remote_players[id].set_pos(pos)
-	remote_players[id].set_linear_velocity(v)"
+	remote_players[id].set_linear_velocity(v)
+	remote_players[id].set_aim(aim)
+	remote_players[id].set_current_type(type)"
 
 [node name="GameManager" type="Node2D"]
 

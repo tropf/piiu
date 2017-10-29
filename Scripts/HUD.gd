@@ -27,7 +27,6 @@ func _ready():
 	
 
 func _process(delta):
-	print(Players.size())
 	var old_pos = your_hitpoints.get_pos()
 	for child in players_node.get_children():
 		if child.get_instance_ID() == uid:

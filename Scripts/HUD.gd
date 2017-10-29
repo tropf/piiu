@@ -47,6 +47,8 @@ func _process(delta):
 	var count = 1
 	for i in Players:
 		count += 1
+		if count > 3:
+			break
 		var player = i[0] 
 		var player_uid = i[1]
 		var old_pos = get_node("player"+str(count)+"_hitpoints").get_pos()

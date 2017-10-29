@@ -23,9 +23,11 @@ func _ready():
 	lenght = your_hitpoints.get_texture().get_width()*your_hitpoints.get_scale().x
 	dist = get_node("player2_hitpoints").get_pos().x
 	players_node = get_parent().get_node("players")
+	scale_hp_bars()
 	
 
 func _process(delta):
+	print(Players.size())
 	var old_pos = your_hitpoints.get_pos()
 	for child in players_node.get_children():
 		if child.get_instance_ID() == uid:
@@ -41,26 +43,7 @@ func _process(delta):
 					is_first = false
 				else:
 					Players.append([child, child.get_instance_ID()])
-				var scale = get_node("player2_hitpoints").get_scale()
-				if Players.size()==1:
-					scale = Vector2(scale.x ,0.18)
-					get_node("player2_hitpoints").set_hidden(false)
-					get_node("player3_hitpoints").set_hidden(true)
-					get_node("player4_hitpoints").set_hidden(true)
-					get_node("player2_hitpoints").set_scale(scale)
-				elif Players.size()==2:
-					scale = Vector2(scale.x ,0.09)
-					get_node("player2_hitpoints").set_hidden(false)
-					get_node("player3_hitpoints").set_hidden(false)
-					get_node("player4_hitpoints").set_hidden(true)
-					var pos = get_node("player3_hitpoints").get_pos()
-					get_node("player3_hitpoints").set_pos(Vector2(pos.x, pos.y+20))
-					get_node("player2_hitpoints").set_scale(scale)
-					get_node("player3_hitpoints").set_scale(scale)
-				elif Players.size()==0:
-					get_node("player2_hitpoints").set_hidden(true)
-					get_node("player3_hitpoints").set_hidden(true)
-					get_node("player4_hitpoints").set_hidden(true)
+				scale_hp_bars()
 		
 	var count = 1
 	for i in Players:
@@ -71,3 +54,25 @@ func _process(delta):
 		for child in players_node.get_children():
 			if child.get_instance_ID() == player_uid:
 				get_node("player"+str(count)+"_hitpoints").set_pos((Vector2( dist-(player.get_current_hitpoints()-player.get_max_hitpoints())*(lenght)/player.get_max_hitpoints(), old_pos.y)))
+				
+func scale_hp_bars():
+	var scale = get_node("player2_hitpoints").get_scale()
+	if Players.size()==1:
+		scale = Vector2(scale.x ,0.18)
+		get_node("player2_hitpoints").set_hidden(false)
+		get_node("player3_hitpoints").set_hidden(true)
+		get_node("player4_hitpoints").set_hidden(true)
+		get_node("player2_hitpoints").set_scale(scale)
+	elif Players.size()==2:
+		scale = Vector2(scale.x ,0.09)
+		get_node("player2_hitpoints").set_hidden(false)
+		get_node("player3_hitpoints").set_hidden(false)
+		get_node("player4_hitpoints").set_hidden(true)
+		var pos = get_node("player3_hitpoints").get_pos()
+		get_node("player3_hitpoints").set_pos(Vector2(pos.x, pos.y+20))
+		get_node("player2_hitpoints").set_scale(scale)
+		get_node("player3_hitpoints").set_scale(scale)
+	elif Players.size()==0:
+		get_node("player2_hitpoints").set_hidden(true)
+		get_node("player3_hitpoints").set_hidden(true)
+		get_node("player4_hitpoints").set_hidden(true)

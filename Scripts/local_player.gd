@@ -12,11 +12,25 @@ func die():
 	queue_free()
 	
 func get_server_id():
-	pass	
+	if null == server_id:
+		server_id = contact_server("/new")
+		print("from server: " + server_id)
 
 func _ready():
-	pass
+	get_server_id()
+
+func send_pos_to_server():
+	#get_server_id()
+	var pos = get_pos()
+	var v = get_linear_velocity()
+	var xstr = str(pos.x)
+	var ystr = str(pos.y)
+	var vx = str(v.x)
+	var vy = str(v.y)
 	
+	var path = "/set/" + server_id + "/" + xstr + "/" + ystr + "/" + vx + "/" + vy
+	contact_server(path)
+
 func set_controlls(controlls):
 	left_input =  controlls + "_left"
 	right_input = controlls + "_right"
@@ -35,6 +49,7 @@ func _fixed_process(delta):
 	if Input.is_action_pressed(left_input):
 		move_l(delta)
 	aim_to(get_viewport().get_mouse_pos())
+	send_pos_to_server()
 	
 func is_local():
 	return true

@@ -155,19 +155,22 @@ class serv : public server_iostream {
 
 
 int main(){
-    try
-    {
-        serv our_server;
+    while (true) {
+        try
+        {
+            cout << "Listening on Port 1337" << endl;
+            serv our_server;
 
-        // set up the server object we have made
-        our_server.set_listening_port(1337);
-        // Tell the server to begin accepting connections.
-        our_server.start_async();
+            // set up the server object we have made
+            our_server.set_listening_port(1337);
+            // Tell the server to begin accepting connections.
+            our_server.start_async();
 
-        std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::hours(std::numeric_limits<int>::max()));
-    }
-    catch (exception& e)
-    {
-        cout << e.what() << endl;
+            std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::hours(std::numeric_limits<int>::max()));
+        }
+        catch (exception& e)
+        {
+            cout << e.what() << endl;
+        }
     }
 }

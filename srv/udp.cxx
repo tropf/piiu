@@ -143,6 +143,7 @@ static string handle(string str) {
     if (regex_match(str, result, set_regex)) {
         int id = std::atoi(result[1].str().c_str());
         
+        cout << "s" << endl;
         playerinfo p;
         p.x = result[2].str();
         p.y = result[3].str();

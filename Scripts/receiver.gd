@@ -12,8 +12,7 @@ static func receive_start(userdata):
 		if null == other_players:
 			other_players = contact_server("/get")
 		Global.callback.parse_players(other_players)
-		print("parsed players")
-		OS.delay_msec(25)
+		OS.delay_msec(15)
 		
 		Global.thread_receiver_mutex.lock()
 	Global.thread_receiver_mutex.unlock()
@@ -32,10 +31,9 @@ static func send_start(userdata):
 			for child in Global.callback.get_children():
 				if child.is_local():
 					child.call_deferred("send_pos_to_server")
-			OS.delay_msec(50)
+			OS.delay_msec(35)
 		Global.thread_sender_mutex.lock()
 			
-	print("after loop")
 	Global.thread_sender_mutex.unlock()
 	return 0
 

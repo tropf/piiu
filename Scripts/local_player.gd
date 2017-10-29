@@ -10,6 +10,7 @@ var since_last_update = 0
 var server_id = null
 
 func die():
+	contact_server("/die/" + server_id)
 	print("lol now im ded")
 	queue_free()
 

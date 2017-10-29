@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include <map>
 #include <chrono>
 #include <string>
@@ -105,15 +104,13 @@ string getter(int id = -1) {
         }
 
         // check timeout
-        cout <<"age: " <<kv.first <<": " << std::chrono::duration_cast<std::chrono::seconds>(now - kv.second.time).count()<< endl;
         if (std::chrono::duration_cast<std::chrono::seconds>(now - kv.second.time).count() > 5) {
-            std::cout << "timout " << endl;
             to_kill.push_back(kv.first);
         };
     }
 
     for (auto killer : to_kill) {
-        info.erase(killer);
+//        info.erase(killer);
     }
 
     return ret;
@@ -259,11 +256,6 @@ class serv : public server_iostream {
 
 
 int main(){
-    handle("/new");
-    handle("/new");
-    handle("/new");
-    std::cout << handle("/get/0") << endl;
-    std::cout << handle("/set/0/0/0/0/0/0/3/4") << endl;
     while (true) {
         try
         {

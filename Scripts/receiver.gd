@@ -12,11 +12,34 @@ static func receive_start(userdata):
 		if null == other_players:
 			other_players = contact_server("/get")
 		Global.callback.parse_players(other_players)
+		
+		if null != Global.id_on_server:
+			bullets = contact_server("/bullets/" + Global.id_on_server)
+			for part in bullets.split(";"):
+				if "" != part:
+					spawn_remote_bullet(part)
 		OS.delay_msec(15)
 		
 		Global.thread_receiver_mutex.lock()
 	Global.thread_receiver_mutex.unlock()
 	return 0
+	
+	
+func spawn_remote_bullet(part):
+	var bullet = preload("res://Prefabs/bullet.tscn").instance()
+	var arr = part.split(",")
+	var x = float(arr[0])
+	var y = float(arr[1])
+	var vx = float(arr[2])
+	var vy = float(arr[3])
+	var rot = float(arr[4])
+	var type = int(arr[5])
+	
+	bullet.set_pos(Vector2(x, y))
+	bullet.set_speed(Vector2(vx, vy))
+	bullet.set_rot(rot)
+	bullet.set_type(type)
+	Global.callback.get_parent().add_child(bullet)
 	
 static func send_start(userdata):
 	var time_per_tick = 1.0 / TICKRATE

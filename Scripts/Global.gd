@@ -10,6 +10,7 @@ var thread_sender = null
 var thread_sender_keep = true
 var thread_sender_mutex = Mutex.new()
 var callback = null
+var id_on_server = null
 
 var client = StreamPeerTCP.new()
 

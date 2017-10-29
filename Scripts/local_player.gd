@@ -21,9 +21,9 @@ func get_server_id():
 	
 func fetch_server_id():
 	if null == server_id:
-		print("fetching id...")
 		server_id = contact_server("/new")
-		print("from server: " + server_id)
+		if Global.id_on_server == null:
+			Global.id_on_server = server_id;
 
 func _ready():
 	fetch_server_id()

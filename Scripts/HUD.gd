@@ -55,6 +55,10 @@ func _process(delta):
 					get_node("player3_hitpoints").set_pos(Vector2(pos.x, pos.y+20))
 					get_node("player2_hitpoints").set_scale(scale)
 					get_node("player3_hitpoints").set_scale(scale)
+				elif Players.size()==0:
+					get_node("player2_hitpoints").set_hidden(true)
+					get_node("player3_hitpoints").set_hidden(true)
+					get_node("player4_hitpoints").set_hidden(true)
 		
 	var count = 1
 	for i in Players:

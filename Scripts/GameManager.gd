@@ -16,6 +16,8 @@ func _ready():
 	player_controls[1] = PLAYER_2_CONTROLLS
 
 func spawn_players():
+	Global.connect_to_server()
+	
 	var spawns = []
 	for single_spawn in current_lvl.get_node("spawns").get_children():
 		spawns.append(single_spawn.get_pos())
@@ -38,8 +40,6 @@ func spawn_players():
 	get_node("players").set_process(true)
 	
 	get_node("level_selection").queue_free()
-	
-	Global.connect_to_server()
 	
 	Global.callback = get_node("players")
 	Global.thread_receiver = Thread.new()

@@ -20,7 +20,9 @@ static func receive_start(userdata):
 	return 0
 	
 	
-func spawn_remote_bullet(part):
+static func spawn_remote_bullet(part):
+	if null == Global.callback:
+		return null
 	print("spawning b: " + part)
 	var bullet = preload("res://Prefabs/bullet.tscn").instance()
 	var arr = part.split(",")

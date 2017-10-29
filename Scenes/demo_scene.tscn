@@ -14,6 +14,7 @@ script/source = "extends Node
 
 var remote_players = {}
 const PLAYER = preload(\"res://Prefabs/player.tscn\")
+var old_keys = []
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -39,8 +40,13 @@ func parse_players(data):
 		return null
 	var as_array = data.split(\";\")
 	
+	old_keys = remote_players.keys()
+	
 	for single_date in as_array:
 		parse_single_player(single_date)
+	for key in old_keys:
+		remote_players[key].queue_free()
+		remote_players.erase(key)
 
 func parse_single_player(data):
 	if \"\" == data:
@@ -48,6 +54,7 @@ func parse_single_player(data):
 	var as_array = data.split(\",\")
 	var id = int(as_array[0])
 	add_remote(id)
+	old_keys.erase(id)
 	var x = float(as_array[1])
 	var y = float(as_array[2])
 	var vx = float(as_array[3])

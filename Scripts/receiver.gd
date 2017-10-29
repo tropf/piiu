@@ -13,6 +13,8 @@ static func receive_start(userdata):
 			for part in bullets.split(";"):
 				if "" != part:
 					spawn_remote_bullet(part)
+		
+		Global.callback.get_children()[0].send_pos_to_server()
 		OS.delay_msec(15)
 		
 		Global.thread_receiver_mutex.lock()

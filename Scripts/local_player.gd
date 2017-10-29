@@ -38,11 +38,12 @@ func _get_pos_as_server_string():
 	var vy = str(v.y)
 	var orientationstr = str(gun.get_rot())
 	var statestr = str(get_current_type())
-	var hitponts = str(get_current_hitpoints())
+	var hitpoints = str(get_current_hitpoints())
 	
 	return "/set/" + server_id + "/" + xstr + "/" + ystr + "/" + vx + "/" + vy + "/" + orientationstr + "/" + statestr+ "/"+ hitpoints
 	
 func send_pos_to_server():
+	print("dd")
 	var path = _get_pos_as_server_string()
 	return contact_server(path)
 

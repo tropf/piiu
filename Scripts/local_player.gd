@@ -86,5 +86,5 @@ func transmit_bullet(bullet):
 	var yspeed = str(speed.y)
 	var rot = str(bullet.get_rot())
 	var type = str(bullet.get_type())
-	
-	Global.send_to_server("/bullet/"+server_id+"/"+xpos+"/"+ypos+"/"+xspeed+"/"+yspeed+"/"+rot+"/"+type)
+	if (null!=server_id):
+		Global.send_to_server("/bullet/"+server_id+"/"+xpos+"/"+ypos+"/"+xspeed+"/"+yspeed+"/"+rot+"/"+type)

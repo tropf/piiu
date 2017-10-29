@@ -4,14 +4,9 @@ static func receive_start(userdata):
 	Global.thread_receiver_mutex.lock()
 	while (Global.thread_receiver_keep):
 		Global.thread_receiver_mutex.unlock()
-		var other_players = null
-		for child in Global.callback.get_children():
-			if child.is_local():
-				other_players = child.send_pos_to_server()
-		
-		if null == other_players:
-			other_players = contact_server("/get")
-		Global.callback.parse_players(other_players)
+		if Global.id_on_server != null:
+			var x = contact_server("/get/" + Global.id_on_server)
+			Global.callback.parse_players(x)
 		
 		if null != Global.id_on_server:
 			var bullets = contact_server("/bullets/" + Global.id_on_server)

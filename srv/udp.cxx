@@ -138,9 +138,11 @@ class serv : public server_iostream {
                 buffer += ch;
             } else {
                 cout << ">>> " << buffer << endl;
-                auto response = handle(buffer) + "\n";
-                cout << "<<< " << response << endl;
-                out << response;
+                if (buffer != "/nop") {
+                    auto response = handle(buffer) + "\n";
+                    cout << "<<< " << response << endl;
+                    out << response;
+                }
 
                 buffer = "";
             }

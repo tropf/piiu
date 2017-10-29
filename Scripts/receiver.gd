@@ -4,17 +4,16 @@ static func receive_start(userdata):
 	Global.thread_receiver_mutex.lock()
 	while (Global.thread_receiver_keep):
 		Global.thread_receiver_mutex.unlock()
-	
 		var other_players = null
 		for child in Global.callback.get_children():
 			if child.is_local():
 				other_players = child.send_pos_to_server()
 		
-		OS.sleep_msec(25)
-				
 		if null == other_players:
 			other_players = contact_server("/get")
 		Global.callback.parse_players(other_players)
+		print("parsed players")
+		OS.delay_msec(25)
 		
 		Global.thread_receiver_mutex.lock()
 	Global.thread_receiver_mutex.unlock()

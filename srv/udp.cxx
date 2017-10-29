@@ -18,13 +18,53 @@ typedef struct {
     string x, y;
     string vx, vy;
     string rotation, state;
+    string hp;
     std::chrono::system_clock::time_point time;
     bool dead = false;
     std::vector<int> friends;
 } playerinfo;
+
+typedef struct {
+    string x, y;
+    string vx, vy;
+    string state;
+    string rotation;
+    std::vector<int> known;
+} bullet;
+
 int next_id = 0;
 
 std::map<int, playerinfo> info;
+std::vector<bullet> bullets;
+
+string bulletinfo(int id = -1) {
+    string ret = "";
+    bool first = true;
+    for (auto& kv : bullets) {
+        // check if dead:
+        if (end(kv.known) == find(begin(kv.known), end(kv.known), id)) {
+            if (first) {
+                first = false;
+            } else {
+                ret += ";";
+            }
+
+            // send nomral
+            ret += kv.x + ",";
+            ret += kv.y + ",";
+            ret += kv.vx + ",";
+            ret += kv.vy + ",";
+            ret += kv.rotation + ",";
+            ret += kv.state;
+
+            if (-1 != id) {
+                kv.known.push_back(id);
+            }
+        }
+    }
+
+    return ret;
+}
 
 string getter(int id = -1) {
     string ret = "";
@@ -53,7 +93,8 @@ string getter(int id = -1) {
                     ret += kv.second.vx + ",";
                     ret += kv.second.vy + ",";
                     ret += kv.second.rotation + ",";
-                    ret += kv.second.state;
+                    ret += kv.second.state + ",";
+                    ret += kv.second.hp;
                 }
             }
         }
@@ -81,6 +122,7 @@ static string handle(string str) {
         p.vy = "0";
         p.rotation = "0";
         p.state = "0";
+        p.hp = "10";
         p.time = chrono::system_clock::now();
 
         info[id] = p;
@@ -89,7 +131,7 @@ static string handle(string str) {
 
     smatch result;
 
-    regex set_regex("\\/set\\/([0-9]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)");
+    regex set_regex("\\/set\\/([0-9]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)");
     if (regex_match(str, result, set_regex)) {
         int id = std::atoi(result[1].str().c_str());
         
@@ -100,10 +142,35 @@ static string handle(string str) {
         p.vy = result[5].str();
         p.rotation = result[6].str();
         p.state = result[7].str();
+        p.hp = result[8].str();
         p.time = chrono::system_clock::now();
         
         info[id] = p;
         return getter(id);
+    }
+
+    regex fire_regex("\\/fire\\/([0-9]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)");
+    if (regex_match(str, result, fire_regex)) {
+        int id = std::atoi(result[1].str().c_str());
+        
+        bullet p;
+        p.x = result[2].str();
+        p.y = result[3].str();
+        p.vx = result[4].str();
+        p.vy = result[5].str();
+        p.rotation = result[6].str();
+        p.state = result[7].str();
+        
+        p.known.push_back(id);
+
+        bullets.push_back(p);
+        return "";
+    }
+
+    regex bullets_regex("\\/bullets\\/([0-9]+)");
+    if (regex_match(str, result, bullets_regex)) {
+        int id = std::atoi(result[1].str().c_str());
+        return bulletinfo(id);
     }
 
     regex get_regex("\\/get\\/([0-9]+)");

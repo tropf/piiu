@@ -27,32 +27,6 @@ int main() {
         return "Hello world";
     });
 
-    CROW_ROUTE(app, "/new")([&](){
-        int id = next_id++;
-        playerinfo p;
-        p.x = "0";
-        p.y = "0";
-        p.vx = "0";
-        p.vy = "0";
-        p.time = chrono::system_clock::now();
-
-        info[id] = p;
-        return crow::response(std::to_string(id));
-    });
-
-    CROW_ROUTE(app, "/set/<int>/<string>/<string>/<string>/<string>")(
-            [&](int id, string x, string y, string vx, string vy){
-        playerinfo p;
-        p.x = x;
-        p.y = y;
-        p.vx = vx;
-        p.vy = vy;
-        p.time = chrono::system_clock::now();
-        
-        info[id] = p;
-        return crow::response("");
-    });
-
     auto getter = [&](int id = -1) -> string {
         string ret = "";
         bool first = true;
@@ -95,6 +69,33 @@ int main() {
 
         return ret;
     };
+
+    CROW_ROUTE(app, "/new")([&](){
+        int id = next_id++;
+        playerinfo p;
+        p.x = "0";
+        p.y = "0";
+        p.vx = "0";
+        p.vy = "0";
+        p.time = chrono::system_clock::now();
+
+        info[id] = p;
+        return crow::response(std::to_string(id));
+    });
+
+    CROW_ROUTE(app, "/set/<int>/<string>/<string>/<string>/<string>")(
+            [&](int id, string x, string y, string vx, string vy){
+        playerinfo p;
+        p.x = x;
+        p.y = y;
+        p.vx = vx;
+        p.vy = vy;
+        p.time = chrono::system_clock::now();
+        
+        info[id] = p;
+        return crow::response(getter(id));
+    });
+
 
     CROW_ROUTE(app, "/get/<int>")(
             [&](int id){

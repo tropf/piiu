@@ -75,3 +75,14 @@ func is_local():
 func is_remote():
 	return false
 	
+func transmit_bullet(bullet):
+	var pos = bullet.get_pos()
+	var xpos = str(pos.x)
+	var ypos = str(pos.y)
+	var speed = bullet.get_speed()
+	var xspeed = str(speed.x)
+	var yspeed = str(speed.y)
+	var rot = str(bullet.get_rot())
+	var type = str(bullet.get_type())
+	
+	Global.send_to_server("/bullet/"+server_id+"/"+xpos+"/"+ypos+"/"+xspeed+"/"+yspeed+"/"+rot+"/"+type)

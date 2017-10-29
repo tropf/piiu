@@ -69,7 +69,11 @@ func fire():
 		bullet.set_speed(Vector2(500 * cos(gun.get_rot()), 500 * -sin(gun.get_rot())))
 		bullet.add_immune(self)
 		get_parent().get_parent().add_child(bullet)
+		transmit_bullet(bullet)
 #END interface
+
+func transmit_bullet(bullet):
+	pass
 
 func contact_server(path):
 	return Global.send_to_server(path)
@@ -109,6 +113,7 @@ func get_current_type():
 	
 func set_current_type(type_to_set):
 	current_type = type_to_set
+	gun.set_type(type_to_set)
 	
 func reset_jumps():
 	jumps = 2

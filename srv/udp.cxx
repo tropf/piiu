@@ -74,7 +74,7 @@ string getter(int id = -1) {
     string ret = "";
     bool first = true;
     std::vector<int> to_kill;
-    chrono::system_clock::time_point timeout = chrono::system_clock::now() - chrono::seconds(5);
+    auto now = chrono::system_clock::now();
     for (auto& kv : info) {
         if (id != kv.first) {
             // check if dead:
@@ -106,7 +106,8 @@ string getter(int id = -1) {
         }
 
         // check timeout
-        if (kv.second.time < timeout) {
+        if (std::chrono::duration_cast<std::chrono::seconds>(now - kv.second.time).count() > 5) {
+            std::cout << "timout " << endl;
             to_kill.push_back(kv.first);
         };
     }

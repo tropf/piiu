@@ -109,6 +109,7 @@ func get_current_type():
 	
 func set_current_type(type_to_set):
 	current_type = type_to_set
+	gun.set_type(type_to_set)
 	
 func reset_jumps():
 	jumps = 2

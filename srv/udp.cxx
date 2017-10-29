@@ -78,7 +78,7 @@ string getter(int id = -1) {
     for (auto& kv : info) {
         if (id != kv.first) {
             // check if dead:
-            if ((! kv.second.dead) || (end(kv.second.friends) == find(begin(kv.second.friends), end(kv.second.friends), id))) {
+            if (!((kv.second.dead) && (end(kv.second.friends) != find(begin(kv.second.friends), end(kv.second.friends), id)))) {
                 if (first) {
                     first = false;
                 } else {
@@ -258,7 +258,11 @@ class serv : public server_iostream {
 
 
 int main(){
+    handle("/new");
+    handle("/new");
+    handle("/new");
     std::cout << handle("/get/0") << endl;
+    std::cout << handle("/set/0/0/0/0/0/0/3/4") << endl;
     while (true) {
         try
         {

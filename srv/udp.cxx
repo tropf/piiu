@@ -101,7 +101,6 @@ string getter(int id = -1) {
                     ret += kv.second.hp;
                 }
 
-                kv.second.time = chrono::system_clock::now();
             }
         }
 

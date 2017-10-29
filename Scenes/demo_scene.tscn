@@ -26,6 +26,7 @@ func _process(delta):
 		Global.winner = get_children()[0].get_player_name()
 		for child in get_children():
 			child.queue_free()
+		Global.disconnect_from_server()
 		get_tree().change_scene(\"res://Scenes/win_scene.tscn\")
 		
 func add_remote(id):

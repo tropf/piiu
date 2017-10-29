@@ -39,6 +39,8 @@ func spawn_players():
 	
 	get_node("level_selection").queue_free()
 	
+	Global.connect_to_server()
+	
 	Global.callback = get_node("players")
 	Global.thread_receiver = Thread.new()
 	Global.thread_receiver.start(preload("res://Scripts/receiver.gd"), "receive_start")	

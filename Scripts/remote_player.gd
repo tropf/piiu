@@ -5,3 +5,7 @@ func is_local():
 	
 func is_remote():
 	return true
+
+func set_aim(aim):
+	gun.set_rot(aim)
+

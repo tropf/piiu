@@ -95,6 +95,7 @@ animations = [ {
 
 [node name="bullet" type="Area2D"]
 
+transform/scale = Vector2( 1.7, 1.7 )
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 3, 0, 0, 3, 0, 0 )
@@ -127,7 +128,6 @@ transform/pos = Vector2( -4.27188, -0.142395 )
 transform/scale = Vector2( 0.04, 0.04 )
 frames = SubResource( 4 )
 animation = "default"
-frame = 1
 playing = true
 
 [node name="stone_sprite" type="AnimatedSprite" parent="."]
@@ -137,7 +137,7 @@ transform/pos = Vector2( -5.06992, 0.174824 )
 transform/scale = Vector2( 0.023, 0.023 )
 frames = SubResource( 5 )
 animation = "default"
-frame = 2
+frame = 1
 playing = true
 
 

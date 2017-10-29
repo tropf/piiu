@@ -14,7 +14,7 @@ script/source = "extends Node
 
 var remote_players = {}
 const PLAYER = preload(\"res://Prefabs/player.tscn\")
-var old_keys = []
+var current_players = []
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -24,8 +24,8 @@ func _ready():
 func _process(delta):
 	if false and 1 == get_children().size():
 		Global.winner = get_children()[0].get_player_name()
-		for child in get_children():
-			child.queue_free()
+		#for child in get_children():
+		#	child.queue_free()
 		Global.disconnect_from_server()
 		get_tree().change_scene(\"res://Scenes/win_scene.tscn\")
 		
@@ -37,28 +37,25 @@ func add_remote(id):
 		add_child(remote_players[id])
 
 func parse_players(data):
-	if \"\" == data:
-		return null
 	var as_array = data.split(\";\")
 	
-	old_keys = remote_players.keys()
+	current_players = []
 	
 	for single_date in as_array:
 		parse_single_player(single_date)
-	for key in old_keys:
-		remote_players[key].queue_free()
-		remote_players.erase(key)
+	for key in remote_players.keys():
+		if not (key in current_players):
+			pass
+			#print(\"killing #\" + str(key))
+			#remote_players[key].queue_free()
+			#remote_players.erase(key)
 
 func parse_single_player(data):
 	if \"\" == data:
 		return null
 	var as_array = data.split(\",\")
 	var id = int(as_array[0])
-	for child in get_children():
-		if child.get_server_id() == int(id) and child.is_local():
-			return null
 	add_remote(id)
-	old_keys.erase(id)
 	var x = float(as_array[1])
 	var y = float(as_array[2])
 	var vx = float(as_array[3])
@@ -67,6 +64,8 @@ func parse_single_player(data):
 	var pos = Vector2(x, y)
 	var v = Vector2(vx, vy)
 	
+	current_players.append(id)
+	print(\"pos: \" + str(pos))
 	remote_players[id].set_pos(pos)
 	remote_players[id].set_linear_velocity(v)"
 

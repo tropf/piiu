@@ -35,8 +35,10 @@ func _get_pos_as_server_string():
 	var ystr = str(pos.y)
 	var vx = str(v.x)
 	var vy = str(v.y)
+	var orientationstr = str(gun.get_rot())
+	var statestr = str(get_current_type())
 	
-	return "/set/" + server_id + "/" + xstr + "/" + ystr + "/" + vx + "/" + vy
+	return "/set/" + server_id + "/" + xstr + "/" + ystr + "/" + vx + "/" + vy + "/" + orientationstr + "/" + statestr
 	
 func send_pos_to_server():
 	var path = _get_pos_as_server_string()

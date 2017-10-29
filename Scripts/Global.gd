@@ -17,7 +17,8 @@ func connect_to_server():
 	print("connecting...")
 	if !client.is_connected():
 		client = StreamPeerTCP.new()
-		client.connect("185.82.23.126",1337)
+		#client.connect("185.82.23.126",1337)
+		client.connect("127.0.0.1",1337)
 		OS.delay_msec(500)
 		client.put_utf8_string("/nop\n")
 
@@ -35,6 +36,6 @@ func send_to_server(data):
 			while char != "\n":
 				buf += char
 				char = client.get_string(1)
-			print("<<< " + data)
-			print(">>> " + buf)
+			#print("<<< " + data)
+			#print(">>> " + buf)
 			return str(buf)

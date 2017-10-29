@@ -105,6 +105,7 @@ string getter(int id = -1) {
 
         // check timeout
         if (kv.second.time < timeout) {
+            cout << "timeout: " << kv.first << endl;
             to_kill.push_back(kv.first);
         };
     }
@@ -234,11 +235,6 @@ class serv : public server_iostream {
         string buffer = "";
         int x = 0;
         while (in.peek() != EOF) {
-            if (x > 5) {
-
-                cout << "this is: " << std::this_thread::get_id() << endl;
-                cout << "players: " << info.size() << endl;
-            }
             ch = in.get();
 
             if ('\n' != ch) {
@@ -263,8 +259,6 @@ class serv : public server_iostream {
 
 
 int main(){
-    handle("/new");
-    handle("/new");
     std::cout << handle("/get/0") << endl;
     while (true) {
         try

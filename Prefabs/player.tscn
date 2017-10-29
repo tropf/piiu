@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://Assets/players/char_normal.png" type="Texture" id=1]
-[ext_resource path="res://Assets/left_pallete.png" type="Texture" id=2]
+[ext_resource path="res://Assets/players/hand/normal_hand.png" type="Texture" id=2]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 
@@ -47,16 +47,26 @@ script/source = "extends Position2D
 # var a = 2
 # var b = \"textvar\"
 
+var hand = null
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
-	pass
+	set_process(true)
+	hand = get_node(\"barrel/Sprite\")
 	
 func aim_to(vector2):
 	set_rot(to_angle(vector2 - get_parent().get_pos() ))
 	
 func to_angle(vector):
-	return (atan2(vector.x, vector.y) - PI/2)"
+	return (atan2(vector.x, vector.y) - PI/2)
+
+func _process(delta):
+	var rot = get_rot()
+	if rot > PI/2 or rot < -PI/2:
+		hand.set_flip_h(true)
+	else:
+		hand.set_flip_h(false)"
 
 [node name="Player" type="RigidBody2D"]
 
@@ -126,6 +136,9 @@ transform/pos = Vector2( 60, 0 )
 
 [node name="Sprite" type="Sprite" parent="gun/barrel"]
 
+transform/rot = -90.0
+transform/scale = Vector2( 0.07, 0.07 )
 texture = ExtResource( 2 )
+offset = Vector2( 0, 200 )
 
 

@@ -30,9 +30,6 @@ func _process(delta):
 		
 func add_remote(id):
 	if not (id in remote_players):
-		for child in get_children():
-			if child.is_local():
-				return null
 		remote_players[id] = PLAYER.instance()
 		remote_players[id].set_script(preload(\"res://Scripts/remote_player.gd\"))
 		remote_players[id].set_mode(1)

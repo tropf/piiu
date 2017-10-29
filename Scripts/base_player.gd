@@ -72,39 +72,7 @@ func fire():
 #END interface
 
 func contact_server(path):
-	var err=0
-	var http = HTTPClient.new() # Create the Client
-	
-	var err = http.connect(Global.server,Global.port) # Connect to host/port
-	assert(err==OK) # Make sure connection was OK
-	
-	while( http.get_status()==HTTPClient.STATUS_CONNECTING or http.get_status()==HTTPClient.STATUS_RESOLVING):
-		http.poll()
-		OS.delay_usec(500)
-	assert( http.get_status() == HTTPClient.STATUS_CONNECTED ) # Could not connect
-	var headers=[
-		"User-Agent: Pirulo/1.0 (Godot)",
-		"Accept: */*"
-	]
-	err = http.request(HTTPClient.METHOD_GET,path,headers) # Request a page from the site (this one was chunked..)
-	assert( err == OK ) # Make sure all is OK
-	while (http.get_status() == HTTPClient.STATUS_REQUESTING):
-		http.poll()
-		OS.delay_usec(500)
-	assert( http.get_status() == HTTPClient.STATUS_BODY or http.get_status() == HTTPClient.STATUS_CONNECTED ) # Make sure request finished well.
-	
-	if (http.has_response()):
-		var rb = RawArray() # Array that will hold the data
-		while(http.get_status()==HTTPClient.STATUS_BODY):
-			http.poll()
-			var chunk = http.read_response_body_chunk() # Get a chunk
-			if (chunk.size()==0):
-				OS.delay_usec(1000)
-			else:
-				rb = rb + chunk # Append to read buffer
-		var text = rb.get_string_from_ascii()
-		return text
-	assert(false)
+	return Global.send_to_server(path)
 
 func get_max_hitpoints():
 	return MAX_HITPOINTS

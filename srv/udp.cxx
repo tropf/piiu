@@ -162,6 +162,7 @@ int main(){
         // Tell the server to begin accepting connections.
         our_server.start_async();
 
+        std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::hours(std::numeric_limits<int>::max()));
     }
     catch (exception& e)
     {

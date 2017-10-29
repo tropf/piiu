@@ -5,6 +5,8 @@ var right_input
 var jump_input
 var shoot_input
 
+var since_last_update = 0
+
 var server_id = null
 
 func die():
@@ -29,7 +31,7 @@ func send_pos_to_server():
 	var vy = str(v.y)
 	
 	var path = "/set/" + server_id + "/" + xstr + "/" + ystr + "/" + vx + "/" + vy
-	get_parent().parse_players(contact_server(path))
+	contact_server(path)
 
 func set_controlls(controlls):
 	left_input =  controlls + "_left"
@@ -49,7 +51,10 @@ func _fixed_process(delta):
 	if Input.is_action_pressed(left_input):
 		move_l(delta)
 	aim_to(get_viewport().get_mouse_pos())
-	send_pos_to_server()
+	since_last_update += delta
+	if since_last_update > 0.4:
+		send_pos_to_server()
+		since_last_update -= 0.4
 	
 func is_local():
 	return true

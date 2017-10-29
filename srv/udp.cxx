@@ -241,10 +241,10 @@ class serv : public server_iostream {
             if ('\n' != ch) {
                 buffer += ch;
             } else {
-                cout << ">>> " << buffer << endl;
+                //cout << ">>> " << buffer << endl;
                 if (buffer != "/nop") {
                     auto response = handle(buffer) + "\n";
-                    cout << "<<< " << response << endl;
+//                    cout << "<<< " << response << endl;
                     out << response;
                 }
 

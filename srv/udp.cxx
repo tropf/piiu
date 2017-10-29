@@ -106,7 +106,7 @@ string getter(int id = -1) {
         }
 
         // check timeout
-        cout <<"age: " <<id <<": " << std::chrono::duration_cast<std::chrono::seconds>(now - kv.second.time).count()<< endl;
+        cout <<"age: " <<kv.first <<": " << std::chrono::duration_cast<std::chrono::seconds>(now - kv.second.time).count()<< endl;
         if (std::chrono::duration_cast<std::chrono::seconds>(now - kv.second.time).count() > 5) {
             std::cout << "timout " << endl;
             to_kill.push_back(kv.first);

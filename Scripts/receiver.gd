@@ -1,6 +1,7 @@
 const TICKRATE = 45
 
 static func receive_start(userdata):
+	return 0
 	Global.thread_receiver_mutex.lock()
 	while (Global.thread_receiver_keep):
 		Global.thread_receiver_mutex.unlock()

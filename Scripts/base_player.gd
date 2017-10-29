@@ -145,6 +145,7 @@ func _integrate_forces(state):
 	state.set_linear_velocity(Vector2(next_x, v.y))
 	
 func die():
+	get_tree().change_scene_to(load("res://Scenes/demo_scene.tscn").instance())
 	queue_free()
 		
 func _take_dmg(amount):

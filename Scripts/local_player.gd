@@ -70,7 +70,13 @@ func _fixed_process(delta):
 		move_r(delta)
 	if Input.is_action_pressed(left_input):
 		move_l(delta)
-	aim_to(get_viewport().get_mouse_pos())
+	
+	if "player1_left" == left_input:
+		aim_to(get_viewport().get_mouse_pos())
+	else:
+		var direction = Vector2(Input.get_joy_axis(0, JOY_ANALOG_1_X), Input.get_joy_axis(0, JOY_ANALOG_1_Y))
+	aim_to(get_pos() + direction)
+	
 	
 func is_local():
 	return true

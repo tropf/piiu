@@ -11,34 +11,31 @@ var thread_sender_keep = true
 var thread_sender_mutex = Mutex.new()
 var callback = null
 
-
-
-
 var client = null
 
-func connect_to_server():
+static func connect_to_server():
 	if !client.is_connected():
 		
 		client = StreamPeerTCP.new()
 		client.connect("185.82.23.126",1337)
 
-func disconnect_from_server():
+static func disconnect_from_server():
 	
 	client.disconnect()
 
 
 
 
-func send_to_server(data):
+static func send_to_server(data):
 	if client.is_connected():
-		wrapped_client.put_utf8_string(data+"\n")
+		client.put_utf8_string(data+"\n")
 		
-		if wrapped_client.get_available_bytes() >0:
+		if client.get_available_bytes() >0:
 		
 			var buf = ""
 			var char = ""
 			while char != "\n":
 				buf += char
-				char = wrapped_client.get_string(1)
+				char = client.get_string(1)
 				
 			return str(buf)

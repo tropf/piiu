@@ -53,6 +53,9 @@ func parse_single_player(data):
 		return null
 	var as_array = data.split(\",\")
 	var id = int(as_array[0])
+	for child in get_children():
+		if child.get_server_id() == int(id) and child.is_local():
+			return null
 	add_remote(id)
 	old_keys.erase(id)
 	var x = float(as_array[1])

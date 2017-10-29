@@ -43,13 +43,15 @@ func _process(delta):
 					Players.append([child, child.get_instance_ID()])
 				var scale = get_node("player2_hitpoints").get_scale()
 				if Players.size()==1:
-					print("hi")
 					scale = Vector2(scale.x ,0.18)
+					get_node("player2_hitpoints").set_hidden(false)
 					get_node("player3_hitpoints").set_hidden(true)
 					get_node("player4_hitpoints").set_hidden(true)
 					get_node("player2_hitpoints").set_scale(scale)
 				elif Players.size()==2:
 					scale = Vector2(scale.x ,0.09)
+					get_node("player2_hitpoints").set_hidden(false)
+					get_node("player3_hitpoints").set_hidden(false)
 					get_node("player4_hitpoints").set_hidden(true)
 					var pos = get_node("player3_hitpoints").get_pos()
 					get_node("player3_hitpoints").set_pos(Vector2(pos.x, pos.y+20))

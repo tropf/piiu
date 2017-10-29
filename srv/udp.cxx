@@ -17,6 +17,7 @@ using namespace dlib;
 typedef struct {
     string x, y;
     string vx, vy;
+    string rotation, state;
     std::chrono::system_clock::time_point time;
     bool dead = false;
     std::vector<int> friends;
@@ -42,7 +43,7 @@ string getter(int id = -1) {
                 ret += std::to_string(kv.first) + ",";
                 if (kv.second.dead) {
                     // port to doom
-                    ret += "0,50000,0,0";
+                    ret += "0,50000,0,0,0,0";
                     // remember friend (don't tp again)
                     kv.second.friends.push_back(id);
                 } else {
@@ -50,7 +51,9 @@ string getter(int id = -1) {
                     ret += kv.second.x + ",";
                     ret += kv.second.y + ",";
                     ret += kv.second.vx + ",";
-                    ret += kv.second.vy;
+                    ret += kv.second.vy + ",";
+                    ret += kv.second.rotation + ",";
+                    ret += kv.second.state;
                 }
             }
         }
@@ -76,6 +79,8 @@ static string handle(string str) {
         p.y = "0";
         p.vx = "0";
         p.vy = "0";
+        p.rotation = "0";
+        p.state = "0";
         p.time = chrono::system_clock::now();
 
         info[id] = p;
@@ -84,7 +89,7 @@ static string handle(string str) {
 
     smatch result;
 
-    regex set_regex("\\/set\\/([0-9]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)");
+    regex set_regex("\\/set\\/([0-9]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)\\/([^\\/]+)");
     if (regex_match(str, result, set_regex)) {
         int id = std::atoi(result[1].str().c_str());
         
@@ -93,6 +98,8 @@ static string handle(string str) {
         p.y = result[3].str();
         p.vx = result[4].str();
         p.vy = result[5].str();
+        p.rotation = result[6].str();
+        p.state = result[7].str();
         p.time = chrono::system_clock::now();
         
         info[id] = p;

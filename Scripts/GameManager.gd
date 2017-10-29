@@ -29,7 +29,7 @@ func spawn_players():
 		spawns[rand_nr] = spawns[rand_max]
 		spawns[rand_max] = tmp
 		
-	for i in range(player_controls.size()-1):
+	for i in range(player_controls.size()):
 		var player = player_prefab.instance()
 		player.set_pos(spawns[i])
 		player.set_controlls(player_controls[i])
@@ -59,6 +59,7 @@ func _on_btn_level2_pressed():
 	current_lvl = lvl2
 	add_child(lvl2)
 	spawn_players()
+	add_child(hud.instance())
 
 func _on_btn_quit_pressed():
 	get_tree().quit()

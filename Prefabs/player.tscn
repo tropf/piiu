@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://Assets/players/char_normal.png" type="Texture" id=1]
-[ext_resource path="res://Assets/players/hand/normal_hand.png" type="Texture" id=2]
+[ext_resource path="res://Assets/players/hand/scissors_hand.png" type="Texture" id=2]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 
@@ -48,6 +48,11 @@ script/source = "extends Position2D
 # var b = \"textvar\"
 
 var hand = null
+const NORMAL = preload(\"res://Assets/players/hand/normal_hand.png\")
+const SCISSORS = preload(\"res://Assets/players/hand/scissors_hand.png\")
+const STONE = preload(\"res://Assets/players/hand/stone_hand.png\")
+const PAPER = preload(\"res://Assets/players/hand/paper_hand.png\")
+
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -66,7 +71,17 @@ func _process(delta):
 	if rot > PI/2 or rot < -PI/2:
 		hand.set_flip_h(true)
 	else:
-		hand.set_flip_h(false)"
+		hand.set_flip_h(false)
+
+func set_type(type):
+	if type == 0:
+		hand.set_texture(SCISSORS)
+	elif type == 1:
+		hand.set_texture(STONE)
+	elif type == 2:
+		hand.set_texture(PAPER)
+	else:
+		hand.set_texture(NORMAL)"
 
 [node name="Player" type="RigidBody2D"]
 
@@ -137,7 +152,7 @@ transform/pos = Vector2( 60, 0 )
 [node name="Sprite" type="Sprite" parent="gun/barrel"]
 
 transform/rot = -90.0
-transform/scale = Vector2( 0.07, 0.07 )
+transform/scale = Vector2( 0.05, 0.05 )
 texture = ExtResource( 2 )
 offset = Vector2( 0, 200 )
 

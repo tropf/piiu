@@ -4,6 +4,8 @@ var left_input
 var right_input
 var jump_input
 var shoot_input
+var switch_f_input
+var switch_b_input
 
 var since_last_update = 0
 
@@ -44,12 +46,18 @@ func set_controlls(controlls):
 	right_input = controlls + "_right"
 	jump_input = controlls + "_jump"
 	shoot_input = controlls + "_shoot"
+	switch_b_input = controlls + "_switch_b"
+	switch_f_input = controlls + "_switch_f"
 
 func _input(event):
 	if event.is_action_pressed(jump_input):
 		jump()
 	if event.is_action_pressed(shoot_input):
 		fire()
+	if event.is_action_pressed(switch_f_input):
+		switch_f()
+	if event.is_action_pressed(switch_b_input):
+		switch_b()
 		
 func _fixed_process(delta):
 	if Input.is_action_pressed(right_input):

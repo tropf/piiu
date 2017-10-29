@@ -46,9 +46,13 @@ func jump():
 
 func switch_f():
 	current_type = (current_type+1)%3
+	gun.set_type(current_type)
 
 func switch_b():
 	current_type = (current_type-1)%3
+	if current_type < 0:
+		current_type += 3
+	gun.set_type(current_type)
 
 func aim_to(vector2):
 	gun.aim_to(vector2)
@@ -56,7 +60,7 @@ func aim_to(vector2):
 func fire():
 	if fire_ready <=0:
 		#apply_impulse(Vector2(0,0),Vector2(-200 * cos(gun.get_rot()), -200 * -sin(gun.get_rot())))
-		fire_ready = 1
+		fire_ready = 0.25
 		var bullet = BULLET.instance()
 		bullet.set_type(get_current_type())
 		bullet.set_rot(gun.get_rot())

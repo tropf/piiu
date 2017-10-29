@@ -100,12 +100,13 @@ string getter(int id = -1) {
                     ret += kv.second.state + ",";
                     ret += kv.second.hp;
                 }
+
+                kv.second.time = chrono::system_clock::now();
             }
         }
 
         // check timeout
         if (kv.second.time < timeout) {
-            cout << "timeout: " << kv.first << endl;
             to_kill.push_back(kv.first);
         };
     }
@@ -233,18 +234,16 @@ class serv : public server_iostream {
         uint64 connection_id) {
         char ch;
         string buffer = "";
-        int x = 0;
         while (in.peek() != EOF) {
             ch = in.get();
 
             if ('\n' != ch) {
                 buffer += ch;
             } else {
-                //cout << ">>> " << buffer << endl;
-                x++;
+                cout << ">>> " << buffer << endl;
                 if (buffer != "/nop") {
                     auto response = handle(buffer) + "\n";
-                    //cout << "<<< " << response << endl;
+                    cout << "<<< " << response << endl;
                     out << response;
                 }
 

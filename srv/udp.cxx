@@ -232,14 +232,20 @@ class serv : public server_iostream {
         uint64 connection_id) {
         char ch;
         string buffer = "";
-        cout << "this is: " << std::this_thread::get_id() << endl;
+        int x = 0;
         while (in.peek() != EOF) {
+            if (x > 5) {
+
+                cout << "this is: " << std::this_thread::get_id() << endl;
+                cout << "players: " << info.size() << endl;
+            }
             ch = in.get();
 
             if ('\n' != ch) {
                 buffer += ch;
             } else {
                 //cout << ">>> " << buffer << endl;
+                x++;
                 if (buffer != "/nop") {
                     auto response = handle(buffer) + "\n";
                     //cout << "<<< " << response << endl;

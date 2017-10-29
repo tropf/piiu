@@ -232,16 +232,17 @@ class serv : public server_iostream {
         uint64 connection_id) {
         char ch;
         string buffer = "";
+        cout << "this is: " << std::this_thread::get_id() << endl;
         while (in.peek() != EOF) {
             ch = in.get();
 
             if ('\n' != ch) {
                 buffer += ch;
             } else {
-                cout << ">>> " << buffer << endl;
+                //cout << ">>> " << buffer << endl;
                 if (buffer != "/nop") {
                     auto response = handle(buffer) + "\n";
-                    cout << "<<< " << response << endl;
+                    //cout << "<<< " << response << endl;
                     out << response;
                 }
 
@@ -256,6 +257,9 @@ class serv : public server_iostream {
 
 
 int main(){
+    handle("/new");
+    handle("/new");
+    std::cout << handle("/get/0") << endl;
     while (true) {
         try
         {

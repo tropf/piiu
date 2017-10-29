@@ -14,7 +14,7 @@ script/source = "extends Node
 
 var remote_players = {}
 const PLAYER = preload(\"res://Prefabs/player.tscn\")
-var current_players = []
+#var current_players = []
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -31,6 +31,7 @@ func _process(delta):
 		
 func add_remote(id):
 	if not (id in remote_players):
+		print(\"adding \" + str(id))
 		remote_players[id] = PLAYER.instance()
 		remote_players[id].set_script(preload(\"res://Scripts/remote_player.gd\"))
 		remote_players[id].set_mode(1)
@@ -39,13 +40,13 @@ func add_remote(id):
 func parse_players(data):
 	var as_array = data.split(\";\")
 	
-	current_players = []
+	#current_players = []
 	
 	for single_date in as_array:
 		parse_single_player(single_date)
-	for key in remote_players.keys():
-		if not (key in current_players):
-			pass
+	#for key in remote_players.keys():
+	#	if not (key in current_players):
+	#		pass
 			#print(\"killing #\" + str(key))
 			#remote_players[key].queue_free()
 			#remote_players.erase(key)
@@ -66,7 +67,7 @@ func parse_single_player(data):
 	var pos = Vector2(x, y)
 	var v = Vector2(vx, vy)
 	
-	current_players.append(id)
+	#current_players.append(id)
 	remote_players[id].set_pos(pos)
 	remote_players[id].set_linear_velocity(v)
 	remote_players[id].set_aim(aim)

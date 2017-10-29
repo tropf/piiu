@@ -1,15 +1,45 @@
-static func run(userdata):
-	print ("ololeeeeee")
+const TICKRATE = 45
+
+static func receive_start(userdata):
 	Global.thread_receiver_mutex.lock()
 	while (Global.thread_receiver_keep):
 		Global.thread_receiver_mutex.unlock()
-		Global.thread_receiver_mutex.lock()
 	
-		var result = contact_server("/get")
-		Global.callback.parse_players(result)
+		var other_players = null
+		for child in Global.callback.get_children():
+			if child.is_local():
+				other_players = child.send_pos_to_server()
+		
+		OS.sleep_msec(25)
+				
+		if null == other_players:
+			other_players = contact_server("/get")
+		Global.callback.parse_players(other_players)
+		
+		Global.thread_receiver_mutex.lock()
 	Global.thread_receiver_mutex.unlock()
 	return 0
 	
+static func send_start(userdata):
+	var time_per_tick = 1.0 / TICKRATE
+	print("sender tickrate: " + str(time_per_tick))
+	
+	Global.thread_sender_mutex.lock()
+	print("les go loop")
+	while (Global.thread_sender_keep):
+		Global.thread_sender_mutex.unlock()
+	
+		if true:
+			for child in Global.callback.get_children():
+				if child.is_local():
+					child.call_deferred("send_pos_to_server")
+			OS.delay_msec(50)
+		Global.thread_sender_mutex.lock()
+			
+	print("after loop")
+	Global.thread_sender_mutex.unlock()
+	return 0
+
 static func contact_server(path):
 	var err=0
 	var http = HTTPClient.new() # Create the Client

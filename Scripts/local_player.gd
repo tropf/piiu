@@ -12,17 +12,19 @@ var server_id = null
 func die():
 	print("lol now im ded")
 	queue_free()
-	
+
 func get_server_id():
+	return server_id
+	
+func fetch_server_id():
 	if null == server_id:
 		server_id = contact_server("/new")
 		print("from server: " + server_id)
 
 func _ready():
-	get_server_id()
+	fetch_server_id()
 
-func send_pos_to_server():
-	#get_server_id()
+func _get_pos_as_server_string():
 	var pos = get_pos()
 	var v = get_linear_velocity()
 	var xstr = str(pos.x)
@@ -30,8 +32,11 @@ func send_pos_to_server():
 	var vx = str(v.x)
 	var vy = str(v.y)
 	
-	var path = "/set/" + server_id + "/" + xstr + "/" + ystr + "/" + vx + "/" + vy
-	contact_server(path)
+	return "/set/" + server_id + "/" + xstr + "/" + ystr + "/" + vx + "/" + vy
+	
+func send_pos_to_server():
+	var path = _get_pos_as_server_string()
+	return contact_server(path)
 
 func set_controlls(controlls):
 	left_input =  controlls + "_left"
@@ -51,10 +56,6 @@ func _fixed_process(delta):
 	if Input.is_action_pressed(left_input):
 		move_l(delta)
 	aim_to(get_viewport().get_mouse_pos())
-	since_last_update += delta
-	if since_last_update > 0.4:
-		send_pos_to_server()
-		since_last_update -= 0.4
 	
 func is_local():
 	return true

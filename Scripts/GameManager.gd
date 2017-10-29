@@ -41,7 +41,10 @@ func spawn_players():
 	
 	Global.callback = get_node("players")
 	Global.thread_receiver = Thread.new()
-	Global.thread_receiver.start(preload("res://Scripts/receiver.gd"), "run")
+	Global.thread_receiver.start(preload("res://Scripts/receiver.gd"), "receive_start")	
+
+	#Global.thread_sender = Thread.new()
+	#Global.thread_sender.start(preload("res://Scripts/receiver.gd"), "send_start")
 
 func _on_btn_level1_pressed():
 	var lvl1 = preload("res://Scenes/lvl0.tscn").instance()

@@ -29,7 +29,7 @@ func send_pos_to_server():
 	var vy = str(v.y)
 	
 	var path = "/set/" + server_id + "/" + xstr + "/" + ystr + "/" + vx + "/" + vy
-	contact_server(path)
+	get_parent().parse_players(contact_server(path))
 
 func set_controlls(controlls):
 	left_input =  controlls + "_left"

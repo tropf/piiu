@@ -29,7 +29,7 @@ func spawn_players():
 		spawns[rand_nr] = spawns[rand_max]
 		spawns[rand_max] = tmp
 		
-	for i in range(player_controls.size()):
+	for i in range(player_controls.size() - 1):
 		var player = player_prefab.instance()
 		player.set_pos(spawns[i])
 		player.set_controlls(player_controls[i])

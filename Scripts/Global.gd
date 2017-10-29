@@ -1,5 +1,5 @@
 extends Node
 
 var winner = ""
-var server = "127.0.0.1"
+var server = "s3nf.net"
 var port = 1337

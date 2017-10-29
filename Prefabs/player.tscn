@@ -8,17 +8,17 @@
 custom_solver_bias = 0.0
 points = Vector2Array( 27, 27, -27, 27, -27, 0, -18, -18, -5, -27, 5, -27, 18, -18, 27, 0 )
 
-[sub_resource type="GDScript" id=5]
+[sub_resource type="GDScript" id=2]
 
 script/source = "extends \"res://Scripts/local_player.gd\"
 "
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=3]
 
 custom_solver_bias = 0.0
 extents = Vector2( 6.12159, 10 )
 
-[sub_resource type="GDScript" id=3]
+[sub_resource type="GDScript" id=4]
 
 script/source = "extends Area2D
 
@@ -39,7 +39,7 @@ func on_body_enter(body):
 func on_body_exit(body):
 	get_parent().set_jumping(-1)"
 
-[sub_resource type="GDScript" id=4]
+[sub_resource type="GDScript" id=5]
 
 script/source = "extends Position2D
 
@@ -81,7 +81,7 @@ velocity/linear = Vector2( 0, 0 )
 velocity/angular = 0.0
 damp_override/linear = -1.0
 damp_override/angular = -1.0
-script/script = SubResource( 5 )
+script/script = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 
@@ -100,25 +100,25 @@ trigger = false
 transform/pos = Vector2( 0, 35 )
 transform/scale = Vector2( 0.9, 0.1 )
 input/pickable = true
-shapes/0/shape = SubResource( 2 )
+shapes/0/shape = SubResource( 3 )
 shapes/0/transform = Matrix32( 3, 0, 0, 3, 0, 0 )
 shapes/0/trigger = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
-script/script = SubResource( 3 )
+script/script = SubResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="feet"]
 
 transform/scale = Vector2( 3, 3 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 trigger = true
 _update_shape_index = 0
 
 [node name="gun" type="Position2D" parent="."]
 
-script/script = SubResource( 4 )
+script/script = SubResource( 5 )
 
 [node name="barrel" type="Position2D" parent="gun"]
 

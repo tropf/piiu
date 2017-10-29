@@ -12,6 +12,9 @@ script/source = "extends Node
 # var a = 2
 # var b = \"textvar\"
 
+var remote_players = {}
+const PLAYER = preload(\"res://Prefabs/player.tscn\")
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -24,7 +27,37 @@ func _process(delta):
 			child.queue_free()
 		get_tree().change_scene(\"res://Scenes/win_scene.tscn\")
 		
-"
+func add_remote(id):
+	if not (id in remote_players):
+		remote_players[id] = PLAYER.instance()
+		remote_players[id].set_script(preload(\"res://Scripts/remote_player.gd\"))
+		remote_players[id].set_mode(1)
+		add_child(remote_players[id])
+
+func parse_players(data):
+	if \"\" == data:
+		return null
+	var as_array = data.split(\";\")
+	
+	for single_date in as_array:
+		parse_single_player(single_date)
+
+func parse_single_player(data):
+	if \"\" == data:
+		return null
+	var as_array = data.split(\",\")
+	var id = int(as_array[0])
+	add_remote(id)
+	var x = float(as_array[1])
+	var y = float(as_array[2])
+	var vx = float(as_array[3])
+	var vy = float(as_array[4])
+	
+	var pos = Vector2(x, y)
+	var v = Vector2(vx, vy)
+	
+	remote_players[id].set_pos(pos)
+	remote_players[id].set_linear_velocity(v)"
 
 [node name="GameManager" type="Node2D"]
 

@@ -14,7 +14,7 @@ static func receive_start(userdata):
 		Global.callback.parse_players(other_players)
 		
 		if null != Global.id_on_server:
-			bullets = contact_server("/bullets/" + Global.id_on_server)
+			var bullets = contact_server("/bullets/" + Global.id_on_server)
 			for part in bullets.split(";"):
 				if "" != part:
 					spawn_remote_bullet(part)

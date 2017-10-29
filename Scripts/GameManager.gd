@@ -7,6 +7,7 @@ extends Node2D
 const PLAYER_1_CONTROLLS = "player1"
 const PLAYER_2_CONTROLLS = "player2"
 const player_prefab = preload("res://Prefabs/player.tscn")
+const hud = preload("res://Scenes/HUD.tscn")
 var current_lvl = null
 var player_controls = {}
 
@@ -43,6 +44,8 @@ func _on_btn_level1_pressed():
 	current_lvl = lvl1
 	add_child(lvl1)
 	spawn_players()
+	add_child(hud.instance())
+	
 
 func _on_btn_level2_pressed():
 	var lvl2 = preload("res://Scenes/lvl2.tscn").instance()

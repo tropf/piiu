@@ -12,8 +12,10 @@ var since_last_update = 0
 var server_id = null
 
 func die():
-	contact_server("/die/" + server_id)
-	print("lol now im ded")
+#	contact_server("/die/" + server_id)
+#	print("lol now im ded")
+	Global.winner = "Uschi"
+	get_tree().change_scene("res://Scenes/win_scene.tscn")
 	queue_free()
 
 func get_server_id():
@@ -73,9 +75,12 @@ func _fixed_process(delta):
 	
 	if "player1_left" == left_input:
 		aim_to(get_viewport().get_mouse_pos())
+		var direction = Vector2(Input.get_joy_axis(1, JOY_ANALOG_1_X), Input.get_joy_axis(1, JOY_ANALOG_1_Y))
+		if direction != Vector2(0, 0):
+			aim_to(get_pos() + direction)
 	else:
 		var direction = Vector2(Input.get_joy_axis(0, JOY_ANALOG_1_X), Input.get_joy_axis(0, JOY_ANALOG_1_Y))
-	aim_to(get_pos() + direction)
+		aim_to(get_pos() + direction)
 	
 	
 func is_local():
